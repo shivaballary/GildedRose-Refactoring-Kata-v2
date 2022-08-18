@@ -16,53 +16,48 @@ class GildedRose {
     }
 
     public void updateQuality() {
-    	List<Item> listItems=Arrays.stream(items).collect(
-                Collectors.toList());
+    	List<Item> listItems=Arrays.stream(items).collect( Collectors.toList());
     	listItems.forEach(item -> {
-    		updateItemQuality(item);
+            updateItemQuality(item);
     	});
-    	
     }
-     private void updateItemQuality(Item item) {
-      
-         boolean isItemQualityDrops = !item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) &&  !item.name.equals(SULFURAS); 
+    
+    private void updateItemQuality(Item item) {
          boolean isExpired=item.sellIn < 1;
-         int dropQualityValue=dropQuality(item,isExpired);
+         if (!item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) &&  !item.name.equals(SULFURAS))
+                setQuality(item,updateQuality(item,isExpired));
          
-         if (isItemQualityDrops)
-                setQuality(item,dropQualityValue);
-         
-          if (item.name.equals(AGED_BRIE)) 
-                 setQuality(item,1);
-                 
-          if (item.name.equals(BACKSTAGE_PASSES)) {
-               setQuality(item,1);
-                if (item.sellIn < 11)
-                     setQuality(item,1);
-                if (item.sellIn < 6) 
-                    setQuality(item,1);
-           }
-            if (!item.name.equals(SULFURAS))
+          if (item.name.equals(AGED_BRIE)) {
+              int value =isExpired ? 2 : 1 ;
+              setQuality(item,value);
+          }
+          if (item.name.equals(BACKSTAGE_PASSES))
+                setBackstagepass(item,isExpired);
+           
+          if (!item.name.equals(SULFURAS))
                 item.sellIn = item.sellIn - 1;
-
-            if (isExpired) {
-                if(item.name.equals(AGED_BRIE)) {
-                   setQuality(item,1); 
-                }else if(item.name.equals(BACKSTAGE_PASSES)){
-                    item.quality=item.quality-item.quality;
-                } 
-            }
      }
     
+    private int updateQuality(Item item, boolean isExpired) {
+		int value=item.name.equals(CONJURED) ? -2 : -1;
+		return isExpired? value * 2 : value;
+	}
+    
+    private void setBackstagepass(Item item, boolean isExpired) {
+		setQuality(item,1);
+		if(item.sellIn < 11)
+			setQuality(item,1);
+		if(item.sellIn < 6)
+			setQuality(item,1);
+		if(isExpired)
+			item.quality=item.quality-item.quality;
+	}
+    
     private void setQuality(Item item, int degradeRate) {
-		int updatdQuality= item.quality+degradeRate;
-		boolean isvalidRange=updatdQuality <= 50 && updatdQuality >= 0;
-		if(isvalidRange) {
+		int updatdQuality  = item.quality+degradeRate;
+		boolean isvalidRange = updatdQuality <= 50 && updatdQuality >= 0;
+		if(isvalidRange)
 			item.quality =updatdQuality;
-		}
 	}
-    private int dropQuality(Item item, boolean isExpired) {
-		int value=item.name.equals(CONJURED)?-2:-1;
-		return isExpired? value * 2:value;
-	}
+   
 }
