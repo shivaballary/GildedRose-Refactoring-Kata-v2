@@ -26,23 +26,22 @@ class GildedRose {
      private void updateItemQuality(Item item) {
          int dropQualityValue = item.name.equals(CONJURED)?-2:-1;
          boolean isItemQualityDrops = !item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) &&  !item.name.equals(SULFURAS);
-          if (isItemQualityDrops) {
+          
+         if (isItemQualityDrops)
                 setQuality(item,dropQualityValue);
-            }
-          if (item.name.equals(AGED_BRIE) || item.name.equals(BACKSTAGE_PASSES)) {
+         
+          if (item.name.equals(AGED_BRIE)) 
                  setQuality(item,1);
-            }      
+                 
           if (item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.sellIn < 11) {
+               setQuality(item,1);
+                if (item.sellIn < 11)
                      setQuality(item,1);
-                 }
-                if (item.sellIn < 6) {
+                if (item.sellIn < 6) 
                     setQuality(item,1);
-                 }
            }
-            if (!item.name.equals(SULFURAS)) {
+            if (!item.name.equals(SULFURAS))
                 item.sellIn = item.sellIn - 1;
-            }
 
             if (item.sellIn < 0) {
                 if (!item.name.equals(AGED_BRIE)) {
