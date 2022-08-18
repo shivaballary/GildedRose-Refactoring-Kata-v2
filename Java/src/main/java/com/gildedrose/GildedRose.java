@@ -26,28 +26,19 @@ class GildedRose {
      private void updateItemQuality(Item item) {
           if (!item.name.equals(AGED_BRIE)
                     && !item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.quality > 0) {
                     if (!item.name.equals(SULFURAS)) {
-                        item.quality = item.quality - 1;
+                         setQuality(item,-1);
                     }
-                }
             } else {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-
+                    setQuality(item,1);
                     if (item.name.equals(BACKSTAGE_PASSES)) {
                         if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
+                                setQuality(item,1);
                         }
 
                         if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
+                            setQuality(item,1);
                         }
-                    }
                 }
             }
 
@@ -58,20 +49,24 @@ class GildedRose {
             if (item.sellIn < 0) {
                 if (!item.name.equals(AGED_BRIE)) {
                     if (!item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.quality > 0) {
-                            if (!item.name.equals(SULFURAS)) {
-                                item.quality = item.quality - 1;
+                          if (!item.name.equals(SULFURAS)) {
+                                setQuality(item,-1);
                             }
-                        }
                     } else {
                         item.quality = item.quality - item.quality;
                     }
                 } else {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1;
-                    }
+                    setQuality(item,1);
                 }
             }
      }
-   
+    
+    private void setQuality(Item item, int degradeRate) {
+		int updatdQuality= item.quality+degradeRate;
+		boolean isvalidRange=updatdQuality <= 50 && updatdQuality >= 0;
+		if(isvalidRange) {
+			item.quality =updatdQuality;
+		}
+		
+	}
 }
