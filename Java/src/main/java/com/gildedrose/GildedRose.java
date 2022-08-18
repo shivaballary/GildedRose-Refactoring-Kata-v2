@@ -24,10 +24,11 @@ class GildedRose {
     	
     }
      private void updateItemQuality(Item item) {
+         int dropQualityValue = item.name.equals(CONJURED)?-2:-1;
           if (!item.name.equals(AGED_BRIE)
                     && !item.name.equals(BACKSTAGE_PASSES)) {
                     if (!item.name.equals(SULFURAS)) {
-                         setQuality(item,-1);
+                         setQuality(item,dropQualityValue);
                     }
             } else {
                     setQuality(item,1);
@@ -50,7 +51,7 @@ class GildedRose {
                 if (!item.name.equals(AGED_BRIE)) {
                     if (!item.name.equals(BACKSTAGE_PASSES)) {
                           if (!item.name.equals(SULFURAS)) {
-                                setQuality(item,-1);
+                                setQuality(item,dropQualityValue);
                             }
                     } else {
                         item.quality = item.quality - item.quality;
