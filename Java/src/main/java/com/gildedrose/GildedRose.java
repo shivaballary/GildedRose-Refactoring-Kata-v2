@@ -24,8 +24,10 @@ class GildedRose {
     	
     }
      private void updateItemQuality(Item item) {
-         int dropQualityValue = item.name.equals(CONJURED)?-2:-1;
+      
          boolean isItemQualityDrops = !item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) &&  !item.name.equals(SULFURAS); 
+         boolean isExpired=item.sellIn < 1;
+         int dropQualityValue=dropQuality(item,isExpired);
          
          if (isItemQualityDrops)
                 setQuality(item,dropQualityValue);
@@ -43,10 +45,7 @@ class GildedRose {
             if (!item.name.equals(SULFURAS))
                 item.sellIn = item.sellIn - 1;
 
-            if (item.sellIn < 0) {
-                if (isItemQualityDrops){
-                     setQuality(item,dropQualityValue);
-                }
+            if (isExpired) {
                 if(item.name.equals(AGED_BRIE)) {
                    setQuality(item,1); 
                 }else if(item.name.equals(BACKSTAGE_PASSES)){
@@ -61,6 +60,9 @@ class GildedRose {
 		if(isvalidRange) {
 			item.quality =updatdQuality;
 		}
-		
+	}
+    private int dropQuality(Item item, boolean isExpired) {
+		int value=item.name.equals(CONJURED)?-2:-1;
+		return isExpired? value * 2:value;
 	}
 }
